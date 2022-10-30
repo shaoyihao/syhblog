@@ -1,0 +1,911 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/syhblog/img/syh.png">
+  <link rel="icon" href="/syhblog/img/syh.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yihao Shao">
+  <meta name="keywords" content="Notes Thoughts">
+  
+    <meta name="description" content="下载Spark 官网下载地址  安装Spark sudo tar -zxf ~&#x2F;Downloads&#x2F;spark-2.4.0-bin-without-hadoop.tgz -C &#x2F;usr&#x2F;local&#x2F; 修改Spark的配置文件 spark-env.sh： cd &#x2F;usr&#x2F;local&#x2F;spark-2.4.0-bin-without-hadoop cp conf&#x2F;spark-env.sh.templat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark安装与配置">
+<meta property="og:url" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="SYH">
+<meta property="og:description" content="下载Spark 官网下载地址  安装Spark sudo tar -zxf ~&#x2F;Downloads&#x2F;spark-2.4.0-bin-without-hadoop.tgz -C &#x2F;usr&#x2F;local&#x2F; 修改Spark的配置文件 spark-env.sh： cd &#x2F;usr&#x2F;local&#x2F;spark-2.4.0-bin-without-hadoop cp conf&#x2F;spark-env.sh.templat">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024092115250.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024092928343.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024093124427.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024093654199.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024093903490.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024094239709.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024100421562.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024100444506.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024102847165.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024103058173.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024105431220.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/3-1.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024110746214.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024112559013.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024112832183.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024113815928.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024114017413.png">
+<meta property="og:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024114234532.png">
+<meta property="article:published_time" content="2022-10-30T12:10:02.000Z">
+<meta property="article:modified_time" content="2022-10-30T12:18:14.617Z">
+<meta property="article:author" content="Yihao Shao">
+<meta property="article:tag" content="软件安装与配置">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/Spark%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/image-20221024092115250.png">
+  
+  
+  
+  <title>Spark安装与配置 - SYH</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/syhblog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/syhblog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/syhblog/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/syhblog/css/mycss.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/syhblog/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/syhblog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/syhblog/js/utils.js" ></script>
+  <script  src="/syhblog/js/color-schema.js" ></script>
+  
+
+
+  
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/syhblog/">
+      <strong>SYH</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                时间轴
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/syhblog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spark安装与配置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Yihao Shao
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-30 20:10" pubdate>
+          2022年10月30日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          86 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-1">  <!-- 左侧的宽度 -->
+    </div>
+
+    <div class="col-lg-10 nopadding-x-md">  <!-- 中间的宽度（主体部分） -->
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+ <!-- 将目录放在这里 -->
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Spark安装与配置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="下载Spark">下载Spark</h3>
+<p><a target="_blank" rel="noopener" href="https://archive.apache.org/dist/spark/spark-2.4.0/">官网下载地址</a></p>
+<p><img src="image-20221024092115250.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024092115250"></p>
+<h3 id="安装Spark">安装Spark</h3>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">tar</span> <span class="token parameter variable">-zxf</span> ~/Downloads/spark-2.4.0-bin-without-hadoop.tgz <span class="token parameter variable">-C</span> /usr/local/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>修改Spark的配置文件 <code>spark-env.sh</code>：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /usr/local/spark-2.4.0-bin-without-hadoop
+<span class="token function">cp</span> conf/spark-env.sh.template conf/spark-env.sh
+<span class="token function">sudo</span> <span class="token function">vim</span> conf/spark-env.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>在第一行添加：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">export</span> <span class="token assign-left variable">SPARK_DIST_CLASSPATH</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>/usr/local/hadoop-3.1.3/bin/hadoop classpath<span class="token variable">)</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>配置完成后就可以直接使用，不需要像Hadoop运行启动命令。通过运行Spark自带的示例，验证Spark是否安装成功。</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /usr/local/spark-2.4.0-bin-without-hadoop
+bin/run-example SparkPi  <span class="token comment"># 输出信息太多，所需结果不容易找到</span>
+bin/run-example SparkPi <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">"Pi is"</span>  <span class="token comment"># 获取所需的输出（利用管道）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024092928343.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024092928343"></p>
+<h3 id="使用Spark-Shell编写代码">使用Spark Shell编写代码</h3>
+<p>启动Spark Shell：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /usr/local/spark-2.4.0-bin-without-hadoop
+bin/spark-shell<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024093124427.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024093124427"></p>
+<p>启动spark-shell后，会自动创建名为 <code>sc</code> 的SparkContext对象和名为 <code>spark</code> 的SparkSession对象。<code>sc</code>可以加载本地文件和HDFS文件创建RDD：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">val textFile <span class="token operator">=</span> sc.textFile<span class="token punctuation">(</span><span class="token string">"file:///usr/local/spark-2.4.0-bin-without-hadoop/README.md"</span><span class="token punctuation">)</span>
+<span class="token comment"># 加载HDFS文件和本地文件都是使用textFile，区别是添加前缀(hdfs://和file://)进行标识。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>一些简单的RDD操作：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">textFile<span class="token punctuation">.</span>first<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">//获取RDD文件textFile的第一行内容</span>
+textFile<span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">//获取RDD文件textFile所有项的计数</span>
+<span class="token keyword">val</span> lineWithSpark <span class="token operator">=</span> textFile<span class="token punctuation">.</span>filter<span class="token punctuation">(</span>line <span class="token keyword">=></span> line<span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">"Spark"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//抽取含有“Spark”的行，返回一个新的RDD</span>
+lineWithSpark<span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//统计该RDD的行数</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024093654199.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024093654199"></p>
+<p>可以通过组合RDD操作进行组合，可以实现简易MapReduce操作：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">//找出文本中每行的最多单词数</span>
+textFile<span class="token punctuation">.</span>map<span class="token punctuation">(</span>line <span class="token keyword">=></span> line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">.</span>reduce<span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token keyword">=></span> <span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">></span> b<span class="token punctuation">)</span> a <span class="token keyword">else</span> b<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024093903490.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024093903490"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/programming-guide.html#transformations">RDD参考文档</a></p>
+</blockquote>
+<p>退出 Spark Shell：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">:quit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<h3 id="独立应用程序编程">独立应用程序编程</h3>
+<p>使用 Scala 编写的程序需要使用 sbt （或者Maven）进行编译打包，相应地，Java 程序使用 Maven 编译打包，而 Python 程序通过 spark-submit 直接提交。</p>
+<h4 id="安装sbt">安装sbt</h4>
+<p><a target="_blank" rel="noopener" href="https://www.scala-sbt.org/download.html">官网下载地址</a></p>
+<p><img src="image-20221024094239709.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024094239709"></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">tar</span> <span class="token parameter variable">-zxvf</span> ~/Downloads/sbt-1.3.8.tgz <span class="token parameter variable">-C</span> /usr/local
+<span class="token function">sudo</span> <span class="token function">cp</span> bin/sbt-launch.jar <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>接着创建一个Shell脚本文件，用于启动sbt：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">vim</span> /usr/local/sbt/sbt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>内容为：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/usr/lib/jvm/jdk1.8.0_341
+<span class="token builtin class-name">export</span> <span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="token environment constant">$PATH</span>
+
+<span class="token assign-left variable">SBT_OPTS</span><span class="token operator">=</span><span class="token string">"-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"</span>
+<span class="token function">java</span> <span class="token variable">$SBT_OPTS</span> <span class="token parameter variable">-jar</span> <span class="token variable"><span class="token variable">`</span><span class="token function">dirname</span> $0<span class="token variable">`</span></span>/sbt-launch.jar <span class="token string">"<span class="token variable">$@</span>"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>保存后，为该Shell脚本文件增加可执行权限：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">chmod</span> u+x /usr/local/sbt/sbt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>然后，可以使用如下命令来查看sbt版本信息：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /usr/local/sbt
+./sbt sbtVersion<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024100421562.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024100421562"></p>
+<p><img src="image-20221024100444506.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024100444506"></p>
+<p>第一次运行上面的sbt编译打包命令会很慢，因为这个过程需要到国外网站下载很多的依赖包。但是，只要安装成功，之后运行命令，速度就比较快了。</p>
+<blockquote>
+<p>为了加快速度，可以尝试更改为国内的仓库地址。</p>
+</blockquote>
+<h4 id="更换仓库地址">更换仓库地址</h4>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~
+<span class="token function">mkdir</span> .sbt   <span class="token comment">#如果该目录已经存在，就不用创建了</span>
+<span class="token builtin class-name">cd</span> .sbt
+<span class="token function">sudo</span> <span class="token function">vim</span> repositories <span class="token comment">#创建repositories文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>在 <code>repositories</code> 中写入：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-vim" data-language="vim"><code class="language-vim"><span class="token punctuation">[</span>repositories<span class="token punctuation">]</span>
+local
+huaweicloud<span class="token operator">-</span>maven<span class="token punctuation">:</span> https<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>repo<span class="token operator">.</span>huaweicloud<span class="token operator">.</span><span class="token builtin">com</span><span class="token operator">/</span>repository<span class="token operator">/</span>maven<span class="token operator">/</span>
+maven<span class="token operator">-</span>central<span class="token punctuation">:</span> https<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>repo1<span class="token operator">.</span>maven<span class="token operator">.</span>org<span class="token operator">/</span>maven2<span class="token operator">/</span>
+sbt<span class="token operator">-</span>plugin<span class="token operator">-</span>repo<span class="token punctuation">:</span> https<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>repo<span class="token operator">.</span>scala<span class="token operator">-</span>sbt<span class="token operator">.</span>org<span class="token operator">/</span>scalasbt<span class="token operator">/</span>sbt<span class="token operator">-</span>plugin<span class="token operator">-</span>releases<span class="token punctuation">,</span> <span class="token punctuation">[</span>organization<span class="token punctuation">]</span><span class="token operator">/</span><span class="token punctuation">[</span>module<span class="token punctuation">]</span><span class="token operator">/</span><span class="token punctuation">(</span>scala_<span class="token punctuation">[</span>scalaVersion<span class="token punctuation">]</span><span class="token operator">/</span><span class="token punctuation">)</span><span class="token punctuation">(</span>sbt_<span class="token punctuation">[</span>sbtVersion<span class="token punctuation">]</span><span class="token operator">/</span><span class="token punctuation">)</span><span class="token punctuation">[</span>revision<span class="token punctuation">]</span><span class="token operator">/</span><span class="token punctuation">[</span>type<span class="token punctuation">]</span>s<span class="token operator">/</span><span class="token punctuation">[</span>artifact<span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token punctuation">[</span>classifier<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">.</span><span class="token punctuation">[</span>ext<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>保存该文件。然后，修改sbt配置文件 <code>/usr/local/sbt/conf/sbtopts</code> 文件，在末尾新增一行，内容如下：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-vim" data-language="vim"><code class="language-vim"><span class="token operator">-</span>Dsbt<span class="token operator">.</span>override<span class="token operator">.</span>build<span class="token operator">.</span>repos<span class="token operator">=</span>true<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>通过上述设置以后，再去运行sbt编译打包，就会快很多。</p>
+<h4 id="编写Scala应用程序代码">编写Scala应用程序代码</h4>
+<p>执行如下命令创建一个文件夹 <code>sparkapp</code> 作为应用程序根目录：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~         
+<span class="token function">mkdir</span> sparkapp        <span class="token comment"># 创建应用程序根目录</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> ./sparkapp/src/main/scala     <span class="token comment"># 创建所需的文件夹结构</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>在 <code>~/sparkapp/src/main/scala</code> 下建立一个名为 <code>SimpleApp.scala</code> 的文件：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">vim</span> SimpleApp.scala<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>内容为：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkContext
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkContext<span class="token punctuation">.</span>_
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkConf
+ 
+<span class="token keyword">object</span> SimpleApp <span class="token punctuation">&#123;</span>
+        <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">val</span> logFile <span class="token operator">=</span> <span class="token string">"file:///usr/local/spark-2.4.0-bin-without-hadoop/README.md"</span>
+            <span class="token keyword">val</span> conf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"Simple Application"</span><span class="token punctuation">)</span>
+            
+            <span class="token keyword">val</span> sc <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span>conf<span class="token punctuation">)</span> 
+            <span class="token comment">//不同于 Spark shell，独立应用程序需要通过上面该语句初始化SparkContext</span>
+            
+            <span class="token keyword">val</span> logData <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span>logFile<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">val</span> numAs <span class="token operator">=</span> logData<span class="token punctuation">.</span>filter<span class="token punctuation">(</span>line <span class="token keyword">=></span> line<span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">val</span> numBs <span class="token operator">=</span> logData<span class="token punctuation">.</span>filter<span class="token punctuation">(</span>line <span class="token keyword">=></span> line<span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            println<span class="token punctuation">(</span><span class="token string">"Lines with a: %s, Lines with b: %s"</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>numAs<span class="token punctuation">,</span> numBs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token comment">// 该程序用于计算文件中包含 "a" 的行数和包含 "b" 的行数。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>该程序依赖 Spark API，因此我们需要通过 sbt 进行编译打包。</p>
+<h4 id="使用-sbt-打包-Scala-程序">使用 sbt 打包 Scala 程序</h4>
+<p>在 <code>~/sparkapp</code> 这个目录中新建文件 <code>simple.sbt</code>，内容如下：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-sbt" data-language="sbt"><code class="language-sbt">name :&#x3D; &quot;Simple Project&quot;
+version :&#x3D; &quot;1.0&quot;
+scalaVersion :&#x3D; &quot;2.11.12&quot;
+libraryDependencies +&#x3D; &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.4.0&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>scala的版本和spark的版本可以在之前启动 Spark shell时，从屏幕的显示信息中找到。</p>
+<p>为保证 sbt 能正常运行，先执行如下命令检查整个应用程序的文件结构：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/sparkapp
+<span class="token function">find</span> <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024102847165.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024102847165"></p>
+<p>接着就可以通过如下代码将整个应用程序打包成 JAR（首次运行需要下载依赖包 ）：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> /usr/local/sbt/sbt package<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024103058173.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024103058173"></p>
+<p>生成的 jar 包的位置为 <code>~/sparkapp/target/scala-2.11/simple-project_2.11-1.0.jar</code>。</p>
+<h4 id="通过-spark-submit-运行程序">通过 spark-submit 运行程序</h4>
+<p>将生成的 jar 包通过 spark-submit 提交到 Spark 中运行：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">/usr/local/spark-2.4.0-bin-without-hadoop/bin/spark-submit <span class="token parameter variable">--class</span> <span class="token string">"SimpleApp"</span> ~/sparkapp/target/scala-2.11/simple-project_2.11-1.0.jar <span class="token comment">#该命令会输出太多信息，结果不清晰</span>
+
+<span class="token comment"># 利用管道</span>
+usr/local/spark-2.4.0-bin-without-hadoop/bin/spark-submit <span class="token parameter variable">--class</span> <span class="token string">"SimpleApp"</span> ~/sparkapp/target/scala-2.11/simple-project_2.11-1.0.jar <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">"Lines with a:"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024105431220.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024105431220"></p>
+<blockquote>
+<p>注意，对于同一个命令，用 <code>sudo</code> 和不用 <code>sudo</code>，可能由于环境变量等的设置而使结果不同。</p>
+</blockquote>
+<h3 id="使用Maven对Java独立应用程序进行编译打包">使用Maven对Java独立应用程序进行编译打包</h3>
+<h4 id="安装Maven">安装Maven</h4>
+<p><a target="_blank" rel="noopener" href="https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip">官方下载地址</a></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/Downloads
+<span class="token function">sudo</span> <span class="token function">unzip</span> apache-maven-3.6.3-bin.zip <span class="token parameter variable">-d</span> /usr/local<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>创建文件夹 <code>sparkapp2</code> 作为应用程序根目录：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> sparkapp2/src/main/java<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p>在 <code>~/sparkapp2/src/main/java</code> 下建立一个名为 <code>SimpleApp.java</code> 的文件，内容为：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>api<span class="token punctuation">.</span>java<span class="token punctuation">.</span></span><span class="token operator">*</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>api<span class="token punctuation">.</span>java<span class="token punctuation">.</span>function<span class="token punctuation">.</span></span><span class="token class-name">Function</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span><span class="token class-name">SparkConf</span></span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SimpleApp</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">String</span> logFile <span class="token operator">=</span> <span class="token string">"file:///usr/local/spark-2.4.0-bin-without-hadoop/README.md"</span><span class="token punctuation">;</span>
+        <span class="token class-name">SparkConf</span> conf<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">SparkConf</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setMaster</span><span class="token punctuation">(</span><span class="token string">"local"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAppName</span><span class="token punctuation">(</span><span class="token string">"SimpleApp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token class-name">JavaSparkContext</span> sc<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">JavaSparkContext</span><span class="token punctuation">(</span>conf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token class-name">JavaRDD</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> logData <span class="token operator">=</span> sc<span class="token punctuation">.</span><span class="token function">textFile</span><span class="token punctuation">(</span>logFile<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token keyword">long</span> numAs <span class="token operator">=</span> logData<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Function</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Boolean</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">call</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> s<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token keyword">long</span> numBs <span class="token operator">=</span> logData<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Function</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Boolean</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">call</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> s<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Lines with a: "</span> <span class="token operator">+</span> numAs <span class="token operator">+</span> <span class="token string">", lines with b: "</span> <span class="token operator">+</span> numBs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>该程序依赖Spark Java API，因此我们需要通过Maven进行编译打包。</p>
+<h4 id="使用Maven打包Java程序">使用Maven打包Java程序</h4>
+<p>在<code>~/sparkapp2</code>目录中新建文件 <code>pom.xml</code>，内容为：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>project</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>cn.edu.xmu<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>simple-project<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>modelVersion</span><span class="token punctuation">></span></span>4.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>modelVersion</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>Simple Project<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>packaging</span><span class="token punctuation">></span></span>jar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>packaging</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repositories</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>jboss<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>JBoss Repository<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://repository.jboss.com/maven2/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repositories</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span> <span class="token comment">&lt;!-- Spark dependency --></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.spark<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spark-core_2.11<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.4.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>project</span><span class="token punctuation">></span></span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>为了保证maven能够正常运行，先执行如下命令检查整个应用程序的文件结构：cd .</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/sparkapp2
+<span class="token function">find</span> <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src="3-1.png" srcset="/syhblog/img/loading.gif" lazyload alt="img"></p>
+<p>接着通过如下代码将这整个应用程序打包成 Jar：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/sparkapp2
+/usr/local/apache-maven-3.6.3/bin/mvn package<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<blockquote>
+<p>注意：电脑需要保持连接网络的状态，首次运行会下载依赖包。</p>
+</blockquote>
+<p><img src="image-20221024110746214.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024110746214"></p>
+<p><img src="image-20221024112559013.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024112559013"></p>
+<blockquote>
+<p>如果运行Maven编译打包过程很慢，是因为需要到国外网站下载很多的依赖包，为了加快速度，可以更改为国内的仓库地址：<a target="_blank" rel="noopener" href="https://dblab.xmu.edu.cn/blog/2758/">参考文章：将Maven源改为国内阿里云仓库</a>。</p>
+</blockquote>
+<h4 id="通过spark-submit-运行程序">通过spark-submit 运行程序</h4>
+<p>将生成的jar包通过spark-submit提交到Spark中运行：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">/usr/local/spark-2.4.0-bin-without-hadoop/bin/spark-submit <span class="token parameter variable">--class</span> <span class="token string">"SimpleApp"</span> ~/sparkapp2/target/simple-project-1.0.jar  <span class="token comment"># 输出太多</span>
+
+<span class="token comment"># 输出想要的结果</span>
+/usr/local/spark-2.4.0-bin-without-hadoop/bin/spark-submit <span class="token parameter variable">--class</span> <span class="token string">"SimpleApp"</span> ~/sparkapp2/target/simple-project-1.0.jar <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">"Lines with a"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024112832183.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024112832183"></p>
+<h3 id="使用Maven对Scala独立应用程序进行编译打包">使用Maven对Scala独立应用程序进行编译打包</h3>
+<h4 id="编写Scala应用程序代码-2">编写Scala应用程序代码</h4>
+<p>创建一个文件夹 <code>sparkapp3</code> 作为应用程序根目录：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">mkdir</span> <span class="token parameter variable">-p</span> sparkapp3/src/main/scala<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p>在 <code>~/sparkapp3/src/main/scala</code> 下建立一个名为 <code>SimpleApp.scala</code> 的文件，内容为：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkContext
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkContext<span class="token punctuation">.</span>_
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkConf
+ 
+<span class="token keyword">object</span> SimpleApp <span class="token punctuation">&#123;</span>
+        <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">val</span> logFile <span class="token operator">=</span> <span class="token string">"file:///usr/local/spark-2.4.0-bin-without-hadoop/README.md"</span>
+            
+            <span class="token keyword">val</span> conf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"Simple Application"</span><span class="token punctuation">)</span>
+            <span class="token keyword">val</span> sc <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span>conf<span class="token punctuation">)</span>
+            
+            <span class="token keyword">val</span> logData <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span>logFile<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">val</span> numAs <span class="token operator">=</span> logData<span class="token punctuation">.</span>filter<span class="token punctuation">(</span>line <span class="token keyword">=></span> line<span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">val</span> numBs <span class="token operator">=</span> logData<span class="token punctuation">.</span>filter<span class="token punctuation">(</span>line <span class="token keyword">=></span> line<span class="token punctuation">.</span>contains<span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            println<span class="token punctuation">(</span><span class="token string">"Lines with a: %s, Lines with b: %s"</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>numAs<span class="token punctuation">,</span> numBs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>该程序依赖Spark Java API，因此我们需要通过Maven进行编译打包。</p>
+<h4 id="使用Maven进行编译打包">使用Maven进行编译打包</h4>
+<p>在<code>~/sparkapp3</code> 目录中新建文件 <code>pom.xml</code>，内容如下：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>project</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>cn.edu.xmu<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>simple-project<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>modelVersion</span><span class="token punctuation">></span></span>4.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>modelVersion</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>Simple Project<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>packaging</span><span class="token punctuation">></span></span>jar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>packaging</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repositories</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>jboss<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>JBoss Repository<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://repository.jboss.com/maven2/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repositories</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span> <span class="token comment">&lt;!-- Spark dependency --></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.spark<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spark-core_2.11<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.4.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sourceDirectory</span><span class="token punctuation">></span></span>src/main/scala<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sourceDirectory</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugins</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.scala-tools<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-scala-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>executions</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>execution</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>goals</span><span class="token punctuation">></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>goal</span><span class="token punctuation">></span></span>compile<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>goal</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>goals</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>execution</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>executions</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scalaVersion</span><span class="token punctuation">></span></span>2.11.12<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scalaVersion</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>args</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>arg</span><span class="token punctuation">></span></span>-target:jvm-1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>arg</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>args</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>project</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>为了保证Maven能够正常运行，先执行如下命令检查整个应用程序的文件结构：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span>  ~/sparkapp3
+<span class="token function">find</span>  <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024113815928.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024113815928"></p>
+<p>将整个应用程序打包成JAR包：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span>  ~/sparkapp3    <span class="token comment">#一定把这个目录设置为当前目录</span>
+/usr/local/apache-maven-3.6.3/bin/mvn package<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024114017413.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024114017413"></p>
+<p>生成的应用程序JAR包的位置为“<code>~/sparkapp3/target/simple-project-1.0.jar</code>”。</p>
+<h4 id="通过spark-submit-运行程序-2">通过spark-submit 运行程序</h4>
+<p>将生成的 jar 包通过 spark-submit 提交到 Spark 中运行：</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">/usr/local/spark-2.4.0-bin-without-hadoop/bin/spark-submit <span class="token parameter variable">--class</span> <span class="token string">"SimpleApp"</span> ~/sparkapp3/target/simple-project-1.0.jar <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">"Lines with a:"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<p><img src="image-20221024114234532.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024114234532"></p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://dblab.xmu.edu.cn/blog/2501/">参考文章</a></p>
+
+                
+              </div>
+            
+            <!-- --------------------------------------------------------------------------------- -->
+            <hr/>   
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/syhblog/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" class="category-chain-item">软件安装与配置</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/syhblog/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">#软件安装与配置</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-1">  <!-- 右侧的宽度（设置为0） -->
+      
+  <!-- 该部分内容也可放到主体部分种，就像对目录的处理方式一样 -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       &copyAll rights reserved. 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/syhblog/js/events.js" ></script>
+<script  src="/syhblog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/syhblog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script  src="https://lib.baomitu.com/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script  src="/syhblog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/syhblog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
