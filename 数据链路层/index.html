@@ -1,0 +1,1198 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/syhblog/img/syh.png">
+  <link rel="icon" href="/syhblog/img/syh.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yihao Shao">
+  <meta name="keywords" content="Notes Thoughts">
+  
+    <meta name="description" content="概述  几个基本概念：  链路（link）：从一个节点到相邻节点的一段物理线路（有线或无线），而中间没有任何其他的交换节点。 数据链路（data link）：当需要在一条线路上传送数据时，除了必须有一条物理线路外，还必须有必要的通信协议来控制这些数据的传输。若把实现这些协议的硬件和软件结合到链路上（一般使用网络适配器实现），就构成了数据链路。不同的数据链路可能采用不同的数据链路层协议。   不管在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据链路层">
+<meta property="og:url" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/index.html">
+<meta property="og:site_name" content="SYH">
+<meta property="og:description" content="概述  几个基本概念：  链路（link）：从一个节点到相邻节点的一段物理线路（有线或无线），而中间没有任何其他的交换节点。 数据链路（data link）：当需要在一条线路上传送数据时，除了必须有一条物理线路外，还必须有必要的通信协议来控制这些数据的传输。若把实现这些协议的硬件和软件结合到链路上（一般使用网络适配器实现），就构成了数据链路。不同的数据链路可能采用不同的数据链路层协议。   不管在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221029110027659.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221029110111607.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B8%A7.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B8%A7%E5%AE%9A%E7%95%8C%E7%AC%A6.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B8%A7%E5%AE%9A%E7%95%8C%E9%94%99%E8%AF%AF.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%AD%97%E8%8A%82%E5%A1%AB%E5%85%85.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%AF%94%E7%89%B9%E5%A1%AB%E5%85%85.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221029110854526.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93%E4%BE%8B%E9%A2%98.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E4%BC%A0%E8%BE%93%E9%94%99%E8%AF%AF.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023141510787.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/PPP%E5%B8%A72.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/PPP%E7%9A%84P%E5%AD%97%E6%AE%B5.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023142825001.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023131836732.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023143650520.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221027212626218.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023152556994.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023152639081.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023152833416.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023160743836.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023161559336.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221027135204160.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221027135404529.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221027135629110.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221029004933458.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221027140254082.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023162307012.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221023162746379.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221028204601632.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221028200959577.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221024151109558.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026153943859.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221028202330347.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026165418083.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221028203746394.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026170940827.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026171221091.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026172131464.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026172512440.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026173336208.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026173520340.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026220840230.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026183643492.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026214109429.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%AF%94%E8%BE%83%E9%9B%86%E7%BA%BF%E5%99%A8%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%9C%BA.jpg">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026215545849.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026222240165.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221026222404937.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221027000025012.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%9C%AA%E5%91%BD%E5%90%8D33.jpg">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221027154217926.png">
+<meta property="og:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221029003018985.png">
+<meta property="article:published_time" content="2022-11-07T14:40:24.000Z">
+<meta property="article:modified_time" content="2022-11-07T15:42:27.680Z">
+<meta property="article:author" content="Yihao Shao">
+<meta property="article:tag" content="Notes Thoughts">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/image-20221029110027659.png">
+  
+  
+  
+  <title>数据链路层 - SYH</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/syhblog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/syhblog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/syhblog/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/syhblog/css/mycss.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/syhblog/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/syhblog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/syhblog/js/utils.js" ></script>
+  <script  src="/syhblog/js/color-schema.js" ></script>
+  
+
+
+  
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/syhblog/">
+      <strong>SYH</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                时间轴
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/syhblog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据链路层"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Yihao Shao
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-07 22:40" pubdate>
+          2022年11月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          153 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-1">  <!-- 左侧的宽度 -->
+    </div>
+
+    <div class="col-lg-10 nopadding-x-md">  <!-- 中间的宽度（主体部分） -->
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+ <!-- 将目录放在这里 -->
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据链路层</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="概述">概述</h2>
+<blockquote>
+<p>几个基本概念：</p>
+<ul>
+<li>链路（link）：从一个节点到相邻节点的一段<strong>物理</strong>线路（有线或无线），而中间没有任何其他的交换节点。</li>
+<li>数据链路（data link）：当需要在一条线路上传送数据时，除了必须有一条物理线路外，还必须有必要的通信协议来控制这些数据的传输。若<strong>把实现这些协议的硬件和软件结合到链路上（一般使用网络适配器实现），就构成了数据链路</strong>。不同的数据链路可能采用不同的数据链路层协议。</li>
+</ul>
+</blockquote>
+<p>不管在哪一段链路上的通信，都可以抽象为节点和节点的通信。</p>
+<p><img src="image-20221029110027659.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221029110027659"></p>
+<p>数据链路层不必考虑物理层如何实现比特传输的细节，从而可以更简单地设想是沿着两个数据链路层之间的水平方向把帧直接发送到对方。</p>
+<p><img src="image-20221029110111607.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221029110111607"></p>
+<p>通信时的基本流程为：发送端的数据链路层把网络层交下来的IP数据报添加首部和尾部构成<strong>帧</strong>（frame），发送给到链路上。若接收端的数据链路层收到的帧无差错，则从收到的帧中提取出IP数据报交给上面的网络层。</p>
+<h3 id="数据链路层的基本问题">数据链路层的基本问题</h3>
+<p>两台主机之间的数据传输，总是在一段段的链路上传送的（<strong>点对点信道</strong>或<strong>广播信道</strong>），这就需要对链路上的通信过程作出一些规范。</p>
+<h4 id="封装成帧">封装成帧</h4>
+<p>将比特流划分成“帧”是为了检测和纠正物理层在比特传输中可能出现的错误。</p>
+<p>在数据（网络层传送来的IP数据报）的前面和后面分别添加上首部和尾部，便构成了一个完整的帧。可见，<strong>一个帧的帧长 = 数据部分的长度 + 帧首部和帧尾部的长度</strong>。</p>
+<p>为提高传输效率，应使<strong>数据部分所占帧的比例尽可能大</strong>，但考虑到对缓存空间的需求、差错控制等因素，<strong>每一种链路层协议都规定了所能传送的帧的数据部分的长度上限，即最大传送单元 MTU（Maximum Transfer Unit）</strong>。</p>
+<p><img src="%E5%B8%A7.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<p>首部和尾部的作用之一是进行<strong>帧定界</strong>：接收端在收到物理层上交的比特流后，能根据首部和尾部的标记，从比特流中识别出帧的开始和结束（即 <strong>帧同步</strong>）。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">控制字符</th>
+<th style="text-align:center">ASCII码</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SOH</td>
+<td style="text-align:center"><code>00000001</code>（01h）</td>
+<td style="text-align:center">Start Of Header，首部开始符</td>
+</tr>
+<tr>
+<td style="text-align:center">EOT</td>
+<td style="text-align:center"><code>00000100</code>（04h）</td>
+<td style="text-align:center">End Of Transmission，传输结束符</td>
+</tr>
+<tr>
+<td style="text-align:center">ESC</td>
+<td style="text-align:center"><code>00011011</code>（1B）</td>
+<td style="text-align:center">转义</td>
+</tr>
+</tbody>
+</table>
+<p>例如当数据是由 <strong>可打印的ASCII码</strong>（95个）组成的文本文件 时，ASCII码中定义了2个控制字符：SOH放在一帧的最前面，表示帧的开始；EOT放在帧的最后，表示帧的结束。</p>
+<p><img src="%E5%B8%A7%E5%AE%9A%E7%95%8C%E7%AC%A6.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<p>当数据在传输中出现差错时，帧定界符的作用更加明显。假定发送端在尚未发送完一个帧时突然出故障，恢复正常后重新从头开始发送刚才的帧。由于使用了帧定界符，接收端就知道前面收到的数据是个不完整的帧（只有SOH而没有EOT），因此会把它丢弃。而后面收到的数据有明确的帧定界符， 因此这是一个完整的帧，收下。</p>
+<blockquote>
+<p>注意：各种数据链路层协议都对帧首部和帧尾部的格式有明确的规定。也并非所有数据链路层协议的帧都含有帧定界标志。</p>
+</blockquote>
+<h4 id="透明传输">透明传输</h4>
+<p>所传输的数据中一定不能出现帧定界控制字符的编码，否则就会导致<strong>帧定界错误</strong>：数据链路层错误地“找到帧的边界”，把部分帧收下（误认为是个完整的帧），而把剩下的那部分数据丢弃（因为这部分找不到帧起始标志）。</p>
+<p><img src="%E5%B8%A7%E5%AE%9A%E7%95%8C%E9%94%99%E8%AF%AF.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<p>当所传输的数据内容不会发生帧定界错误时，就称为<strong>透明传输</strong>。</p>
+<blockquote>
+<p>“<strong>透明</strong>”表示：某一个实际存在的事物看起来却好像不存在一样。“在数据链路层透明传送数据”表示：无论什么样的比特组合的数据，都能够没有差错地通过数据链路层。因此对所传送的数据来说，数据链路层并没有对它们的传输带来什么影响，数据链路层对这些数据来说是透明的。</p>
+</blockquote>
+<p>为了实现透明传输，就必须<strong>使数据中可能出现的帧定界符在接收端不被解释为控制字符</strong>。</p>
+<h5 id="字节填充法">字节填充法</h5>
+<p>例如：对帧的数据部分进行扫描，若数据中出现 SOH 和 EOT，则发送端的数据链路层就在该比特串前插入一个转义字符<code>ESC</code>。如果<code>ESC</code>也出现在数据当中，解决方法仍是在该比特串前面插入一个<code>ESC</code>；接收端的数据链路层在把数据送往网络层之前会删掉该转义字符（若收到连续的两个<code>ESC</code>时，只删除前面的一个）。</p>
+<p><img src="%E5%AD%97%E8%8A%82%E5%A1%AB%E5%85%85.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<h5 id="比特填充法">比特填充法</h5>
+<p>例如：HDLC 协议中采用 <code>01111110</code> 作为帧定界符。为实现透明传输，对帧的数据部分进行扫描，<strong>若数据中出现5个连续的比特1，就在其后插入一个0</strong>。经过填充后的数据中就不会出现帧定界符。</p>
+<p><img src="%E6%AF%94%E7%89%B9%E5%A1%AB%E5%85%85.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<p>接收端的数据链路层每发现5个连续的比特1，</p>
+<ul>
+<li>若下一比特为<code>0</code>，就将该<code>0</code>删除。</li>
+<li>若下一比特为<code>1</code>，则连同其后的<code>0</code>，构成定界符，表示帧结束。</li>
+</ul>
+<p><img src="image-20221029110854526.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221029110854526"></p>
+<details>
+    <summary>例题</summary>
+    <img src="透明传输例题.png" srcset="/syhblog/img/loading.gif" lazyload>
+</details>
+<h4 id="差错检测"><a target="_blank" rel="noopener" href="https://shaoyihao.github.io/syhblog/%E5%B7%AE%E9%94%99%E6%A3%80%E9%94%99/">差错检测</a></h4>
+<p>传输过程中可能会产生<strong>比特差错</strong>（即<strong>误码</strong>）：1变成0或0变成1。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>比特误码率</mtext><mi>B</mi><mi>E</mi><mi>R</mi><mo>=</mo><mfrac><mtext>错误的比特</mtext><mtext>所传输的比特总数</mtext></mfrac></mrow><annotation encoding="application/x-tex">比特误码率BER=\frac{错误的比特}{所传输的比特总数}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">比特误码率</span><span class="mord mathnormal" style="margin-right:0.00773em;">BER</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">所传输的比特总数</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">错误的比特</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>提高信噪比，可以降低误码率，但实际通信链路的误码率不可能为0，因此采取措施来<strong>判断是否出现比特差错</strong>是必要的，一般过程为：</p>
+<ul>
+<li>发送端的数据链路层根据帧的数据内容生成一个帧检验序列FCS（Frame Check Sequence），填入帧尾部。</li>
+<li>接收端的数据链路层从帧尾部取出FCS，<strong>采用与发送方相同的检错技术</strong>，就可以判断是否出现误码。</li>
+</ul>
+<p>奇偶校验和CRC均只能检测错误，而不能定位错误、纠正错误。要想实现纠错，可以使用冗余信息更多的纠错码（例如<strong>海明码</strong>）进行前向纠错。但纠错码的开销较大，在计算机网络中较少使用。</p>
+<h4 id="可靠传输与不可靠传输">可靠传输与不可靠传输</h4>
+<p><img src="%E4%BC%A0%E8%BE%93%E9%94%99%E8%AF%AF.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<p>可见在数据链路层若仅仅使用CRC检验，能够实现<strong>无比特差错</strong>的传输，但仍<strong>不是可靠传输</strong>。</p>
+<p>当接收端检查出错误后，该如何处理呢？这取决于数据链路层提供的服务类型：</p>
+<ul>
+<li>若数据链路层提供的是<strong>不可靠传输</strong>服务，则<strong>发生传输错误时，接收方的数据链路层直接丢弃该帧，无其它措施</strong>。</li>
+<li>若数据链路层提供的是<strong>可靠传输</strong>服务，这就要求数据链路层采用某种措施以保证A发送的信息一定能被B接收到。为检测出帧丢失、帧重复、帧失序，就还需要添加<strong>帧编号</strong>、<strong>确认和重传机制</strong>、<strong>超时重传</strong>等机制。</li>
+</ul>
+<blockquote>
+<p>一般来说，有线传输链路的通信质量较好，误码率较低，不要求数据链路层向上提供可靠传输的服务。可靠传输的任务由上层协议来完成；无线传输链路易受干扰，通信质量较差，误码率较高，则要求数据链路层向上提供可靠传输的服务（例如HDLC协议）。实践证明，这样做可以提高通信效率。</p>
+</blockquote>
+<h2 id="点对点信道的数据链路层——点对点协议PPP">点对点信道的数据链路层——点对点协议PPP</h2>
+<p>对于点对点链路，<strong>PPP</strong>（Point-to-Point Protocol，点对点协议）是目前使用得最广泛的数据链路层协议。</p>
+<blockquote>
+<p>用户计算机和 ISP 进行通信的链路所使用的数据链路层协议就是PPP协议。</p>
+<p><img src="image-20221023141510787.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023141510787"></p>
+</blockquote>
+<p>PPP协议有3个组成部分：</p>
+<ul>
+<li>一个将IP数据报封装到串行链路的方法。既支持异步链路（无奇偶检验的8比特数据），也支持面向比特的同步链路。</li>
+<li>一个用来建立、配置和测试数据链路连接的链路控制协议 LCP（Link Control Protocol）。通信的双方可协商一些选项。</li>
+<li>一套网络控制协议 NCP（Network Control Protocol），其中的每一个协议支持不同的网络层协议。</li>
+</ul>
+<h3 id="帧格式">帧格式</h3>
+<p><img src="PPP%E5%B8%A72.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p>标志（Flag）字段：PPP帧的定界符，取值为<code>0x7E</code>（<strong><code>0111 1110</code></strong>）。</p>
+<blockquote>
+<p><strong>连续两帧之间只需要用一个标志字段</strong>。如果出现连续两个标志字段，就表示这是一个空帧，应当丢弃。</p>
+</blockquote>
+</li>
+<li>
+<p>地址（Address）字段：取值为<code>0xFF</code>，预留（目前没有什么作用）。</p>
+</li>
+<li>
+<p>控制（Control）字段：取值为<code>0x03</code>，预留（目前没有什么作用）。</p>
+</li>
+<li>
+<p>协议（Protocol）字段：其值用来指明帧的数据载荷应向上交付给哪个协议处理。</p>
+<p><img src="PPP%E7%9A%84P%E5%AD%97%E6%AE%B5.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+</li>
+<li>
+<p>帧检验序列（FCS）字段：其值是使用循环冗余校验CRC计算出的检错码。</p>
+</li>
+</ul>
+<h3 id="PPP帧的透明传输">PPP帧的透明传输</h3>
+<h4 id="异步传输">异步传输</h4>
+<p>对于异步链路（面向字节，逐个字符地传送）—— 使用<strong>字节填充</strong>。发送方的处理：</p>
+<ul>
+<li>将数据载荷中出现的每个**<code>0x7E</code><strong>减去<code>0x20</code>（等效为异或0x20），然后在其前面插入</strong>转义字符<code>0x7D</code>**。</li>
+<li>将数据载荷中原来就含有的**<code>0x7D</code>**减去<code>0x20</code>，然后在其前面插入转义字符<code>0x7D</code>。</li>
+<li>将数据载荷中出现的每个<strong>ASCII码控制字符</strong>（即数值小于0x20的字符），加上<code>0x20</code>（相当于异或<code>0x20</code>，将其转换成非控制字符），然后在其前面插入转义字符<code>0x7D</code>。</li>
+</ul>
+<p>![截屏2022-10-23 13.02.40](截屏2022-10-23 13.02.40.png)</p>
+<p>接收方进行与发送方相反的变换，就可以正确地恢复出原始数据载荷。</p>
+<h4 id="同步传输">同步传输</h4>
+<p>对于同步链路（面向比特，一连串的比特连续传送，例如SONET/SDH链路）—— 使用<strong>零比特填充</strong>。</p>
+<p>发送方：对帧的数据部分进行扫描，<strong>每出现5个连续的比特<code>1</code>，则在其后填充一个<code>0</code></strong>。</p>
+<p>接收方：对帧的数据部分进行扫描，<strong>每出现5个连续的比特<code>1</code>，就把其后的一个<code>0</code>删除</strong>。</p>
+<p><img src="image-20221023142825001.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023142825001"></p>
+<h3 id="差错检测-2">差错检测</h3>
+<p>CRC采用的生成多项式为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>R</mi><mi>C</mi><mo>−</mo><mi>C</mi><mi>C</mi><mi>I</mi><mi>T</mi><mi>T</mi><mo>=</mo><msup><mi>X</mi><mn>16</mn></msup><mo>+</mo><msup><mi>X</mi><mn>12</mn></msup><mo>+</mo><msup><mi>X</mi><mn>5</mn></msup><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">CRC-CCITT=X^{16}+X^{12}+X^5+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">CRC</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">CC</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">TT</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">16</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">12</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 。</p>
+<p><img src="image-20221023131836732.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023131836732"></p>
+<p>接收方每收到一个PPP帧，就进行CRC检验。若CRC检验正确，就收下这个帧；否则<strong>就直接丢弃这个帧，其他什么也不做</strong>。</p>
+<blockquote>
+<p>使用PPP的数据链路层，向上提供的是<strong>不可靠数据传输</strong>服务。</p>
+</blockquote>
+<h3 id="PPP协议的工作">PPP协议的工作</h3>
+<ul>
+<li>
+<p>当用户拨号接入 ISP 后，就建立了一条从用户个人电脑到 ISP 的物理连接。</p>
+</li>
+<li>
+<p>这时，用户个人电脑向 ISP 发送一系列 LCP 分组（封装成多个 PPP 帧），以便建立 LCP 连接。这些分组及其响应选择了将要使用的一些 PPP 参数。</p>
+</li>
+<li>
+<p>接着进行网络层配置，网络控制协议 NCP 给新接入的用户个人电脑分配一个临时的 IP 地址。这样，用户个人电脑就成为互联网上的一个有 IP 地址的主机了。</p>
+</li>
+<li>
+<p>当用户通信完毕时，NCP 释放网络层连接，收回原来分配出去的 IP 地址。</p>
+<p>接着，LCP 释放数据链路层连接。</p>
+<p>最后释放的是物理层的连接。</p>
+</li>
+</ul>
+<p><img src="image-20221023143650520.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023143650520"></p>
+<h2 id="以太网">以太网</h2>
+<h3 id="广播信道">广播信道</h3>
+<p>以太网使用的是广播信道，可以进行一对多的通信方式，信道上连接的主机很多，需要进行信道的共享。</p>
+<p><img src="image-20221027212626218.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221027212626218"></p>
+<h3 id="网络适配器">网络适配器</h3>
+<p>要将计算机连接到以太网，需要使用相应的<strong>网络适配器</strong>（Adapter）（即 <strong>网卡</strong>NIC）。</p>
+<p><img src="image-20221023152556994.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023152556994"></p>
+<p><img src="image-20221023152639081.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023152639081"></p>
+<p>在计算机内部，<strong>网卡与CPU</strong>之间的通信，一般是通过计算机主板上的I/O总线以<strong>并行</strong>传输方式进行；网卡与外部以太网（局域网）之间的通信，一般是通过传输媒体以<strong>串行</strong>方式进行的。</p>
+<p>可见，网卡除要实现物理层和数据链路层功能，还要<strong>进行并行传输和串行传输的转换</strong>。由于网络的传输速率和计算机内部总线上的传输速率并不相同，因此在网卡的核心芯片中都会包含<strong>用于缓存数据的存储器</strong>。</p>
+<p><img src="image-20221023152833416.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023152833416"></p>
+<p><strong>适配器在接收和发送各种帧时，不使用计算机的 CPU</strong>。当适配器收到有差错的帧时，就把这个帧直接丢弃而不必通知计算机。当适配器收到正确的帧时，它就使用中断来通知该计算机，并交付网络层。当计算机要发送IP数据报时，就由协议栈把IP数据报交给适配器，组装成帧后发送到局域网。</p>
+<h3 id="MAC地址">MAC地址</h3>
+<p>当多个主机连接在同一个广播信道上，要想区分各主机，每个主机都必须有一个唯一的标识，称为 <strong>MAC地址</strong>（Medium Access Control）。</p>
+<p>MAC地址一般被固化在网卡的EEPROM中，因此MAC地址也被称为<strong>硬件地址、物理地址</strong>。</p>
+<p>注意：<strong>MAC地址是对网络上各接口的唯一标识，而不是对网络上各设备的唯一标识</strong>。一般情况下，普通用户计算机中往往会包含两块网卡：用于接入有线局域网的以太网卡、用于接入无线局域网的Wi-Fi网卡。<strong>每块网卡都有一个全世界唯一的MAC地址</strong>。<strong>交换机和路由器往往具有多个适配器，所以会拥有更多的MAC地址</strong>。若连接在局域网上的一台计算机更换了一个新的适配器，那么该计算机的MAC地址也就改变了，虽然该计算机的地理位置、所接入的局域网都没有发生改变。</p>
+<h4 id="IEEE802局域网MAC地址的格式">IEEE802局域网MAC地址的格式</h4>
+<p>用 **<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>48</mn></mrow><annotation encoding="application/x-tex">48</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">48</span></span></span></span> bit（6个字节）**来构成一个 MAC 地址，转化为十六进制，可以表示为 <code>XX-XX-XX-XX-XX-XX</code>（长度为12）。</p>
+<ul>
+<li>
+<p>前3个字节为组织（公司）唯一标识符 OUI，由IEEE的注册管理机构分配（一个组织可能购买多个OUI）。</p>
+<ul>
+<li>
+<p>首字节的第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 位为 <strong>I/G位</strong>：<code>0</code>表示该MAC地址为<strong>单个站地址</strong>(单播)，<code>1</code>表示该MAC地址为<strong>组地址</strong>(多播)。</p>
+</li>
+<li>
+<p>首字节的第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 位为 <strong>G/L位</strong>：<code>0</code>表示该MAC地址为<strong>全球地址</strong>，保证全球唯一（厂商所购买的 OUI 都属于全球管理）；<code>1</code>表示该MAC地址为<strong>本地地址</strong>，用户可任意分配网络上的地址。</p>
+<blockquote>
+<p>以太网几乎不理会这个 G/L 位。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="image-20221023160743836.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023160743836"></p>
+<p>特别的，48 位全部为 <code>1</code> 的MAC地址（<code>FF-FF-FF-FF-FF-FF</code>）被定义为<strong>广播地址</strong>。</p>
+</li>
+<li>
+<p>后3个字节为网络接口标识符，由厂商自行分配，保证生产出的适配器没有重复地址即可。</p>
+</li>
+</ul>
+<p>MAC地址的<strong>发送顺序</strong>（IEEE802.3标准）：第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 字节 → 第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn></mrow><annotation encoding="application/x-tex">6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">6</span></span></span></span> 字节。对于每个字节内部，第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 位 → 第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7</mn></mrow><annotation encoding="application/x-tex">7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">7</span></span></span></span> 位。</p>
+<p><img src="image-20221023161559336.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023161559336"></p>
+<h3 id="DIX-Ethernet-V2的MAC帧格式">DIX Ethernet V2的MAC帧格式</h3>
+<p><img src="image-20221027135204160.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221027135204160"></p>
+<p>可见，以太网V2的MAC帧的长度范围为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>B</mi><mo>∼</mo><mn>1518</mn><mi>B</mi></mrow><annotation encoding="application/x-tex">64B\sim1518B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">64</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1518</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 。</p>
+<ul>
+<li>
+<p>“类型”字段：用来指明数据载荷中的内容是由上一层的哪个协议封装的，以便将收到的MAC帧的数据载荷上交给上一层的这个协议。</p>
+<p><img src="image-20221027135404529.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221027135404529"></p>
+</li>
+<li>
+<p>“FCS”字段：使用CRC生成的帧检验序列，接收方的网卡通过FCS的内容就可检测出帧在传输过程中是否产生了误码。FCS的检测范围不包括帧开始定界符和物理层插入的前同步码（显然）。</p>
+<p><img src="image-20221027135629110.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221027135629110"></p>
+</li>
+</ul>
+<details>
+    <summary>问题1：帧的首部并没有一个帧长度（或数据长度）字段，那么接收端如何知道从帧中取出多少字节的数据交付上一层呢？</summary>
+    <b>解答</b>：由于曼彻斯特编码的每一个码元的正中间一定有一次电压转换，又发送方把一个以太网帧发送完毕后一段时间内（帧间最小间隔）会停止发送，因此此时网络适配器的接口上的电压也就不再变化了，这样接收方就可以很容易地找到以太网帧的结束位置。在这个位置往前跳 4 字节（FCS字段），就能确定数据字段的结束位置。<br>
+    因此，接收端只要找到帧开始定界符，其后面的连续到达的比特流就都属于同一个 MAC 帧。可见<b>以太网不需要使用帧结束定界符，也不需要使用字节插入来保证透明传输</b>。<br>
+    <img src="./image-20221029004933458.png" srcset="/syhblog/img/loading.gif" lazyload>
+</details>
+<p>对长度小于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>46</mn><mi>B</mi></mrow><annotation encoding="application/x-tex">46B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">46</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 的数据部分会进行填充，以保证最终 MAC 帧长不小于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>B</mi></mrow><annotation encoding="application/x-tex">64B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">64</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span>。</p>
+<details>
+    <summary>问题2：MAC 帧并没有指出在数据字段中是否有填充字段。接收端剥去 MAC 帧的首部和尾部后，就把剩下的部分交给网络层。那么网络层如何知道是否进行了填充呢？</summary>
+    解答：IP 协议的首部有一个“总长度”字段，如果 IP 数据报的“总长度”大于等于46B，那么就说明没有填充；反之，如果“总长度”小于46B，那么就很容易把填充字段计算出。当 MAC 帧把填充了的数据上交给网络层后，网络层会把其中的填充字段丢弃。
+</details>
+<blockquote>
+<p>IEEE802.3标准的MAC帧格式与以太网V2标准基本相同，仅“类型”字段有差别。</p>
+</blockquote>
+<h3 id="以太网的基本工作方式">以太网的基本工作方式</h3>
+<p>物理层在发送MAC帧前，会在帧的前面添加长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> 字节的前导码：</p>
+<p><img src="image-20221027140254082.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221027140254082"></p>
+<p>因为一个站在接收 MAC 帧之初，由于适配器的时钟尚未与到达的比特流达成同步，帧前面的若干位就无法接收。为了使接收端迅速实现位同步，物理层会在所传来的帧的前面插入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> 个字节（由硬件生成），其中：</p>
+<ul>
+<li>
+<p>前同步码（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7</mn></mrow><annotation encoding="application/x-tex">7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">7</span></span></span></span> 个字节的1、0交替码）：使接收端的适配器迅速调整其时钟频率，到达和发送端的时钟同步（即实现位同步）。</p>
+</li>
+<li>
+<p>帧开始定界符（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 个字节，内容为 <code>10101011</code>）：前六位的作用和前同步码一样；末尾的 <code>11</code> 就是告诉接收端适配器 紧跟后面的就是MAC帧的信息。</p>
+<blockquote>
+<p>在使用 SONET/SDH 进行同步传输时不需要用前同步码，因为在同步传输时收发双方的位同步总是一直保持着的。</p>
+</blockquote>
+</li>
+</ul>
+<p>以太网发送的数据都使用<strong>曼彻斯特编码</strong>的信号。把每一个码元分成两个相等的间隔，保证了在每一个比特的正中间出现一次电压转换，接收端利用这种电压转换可以很方便地进行位同步。缺点是：所传输的信号的频带宽度比原始基带信号增加了一倍（因为每秒传送的码元数加倍了）。</p>
+<p>为了通信的简便，以太网采用<strong>无连接</strong>的工作方式（即不必先建立连接就可以直接发送数据）。适配器对发送的帧不进行编号，也不要求对方发回确认。因此以太网提供的服务是<strong>尽最大努力的交付</strong>，即<strong>不可靠的交付</strong>。当目的站收到有差错的数据帧时，就把帧丢弃，其他什么也不做。<strong>对有差错帧是否需要重传由高层来决定</strong>。例如：如果高层使用 TCP 协议，TCP 发现丢失了一些数据后，经过一定的时间后，就会让以太网重传这部分数据。但以太网并不知道这是重传帧，而是当作新的数据帧来发送。</p>
+<p>对于以下情况的MAC帧被视为无效帧：MAC帧的长度不是整数个字节或长度不在64~1518字节之间、通过MAC帧的FCS字段的值检测出帧有误码。<strong>接收方收到无效的MAC帧时，直接丢弃</strong>，以太网不负责重传无效帧。</p>
+<h4 id="一对一通信">一对一通信</h4>
+<p>主机发送的帧的首部中都携带有<strong>发送主机（源主机）和接收主机（目的主机）的MAC地址</strong>。总线上的各主机中的网卡收到该帧后就可以根据帧首部中的目的地址来判断是否与自己的MAC地址匹配，从而丢弃或接收该帧。可见，<strong>局域网上不仅可以进行一对多的广播通信，也可以实现一对一的通信</strong>。</p>
+<p><img src="image-20221023162307012.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023162307012"></p>
+<h4 id="广播通信">广播通信</h4>
+<p><img src="image-20221023162746379.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221023162746379"></p>
+<p><strong>总结</strong>：网卡从网络上每收到一个帧，就检查帧首部中的目的MAC地址，按以下情况处理：</p>
+<ul>
+<li>如果目的MAC地址是广播地址（<code>FF-FF-FF-FF-FF-FF</code>），则接受该帧（广播帧）。</li>
+<li>如果目的MAC地址与网卡上固化的全球单播MAC地址相同，则接受该帧（单播帧）。</li>
+<li>如果目的MAC地址是网卡支持的多播地址，则接受该帧（多播帧）。</li>
+<li>否则丢弃该帧。</li>
+</ul>
+<p>所有的适配器都能识别单播帧和广播帧，有的适配器可用编程方法识别多播帧。当操作系统启动时，它就把适配器初始化，使适配器能够识别某些多播地址。</p>
+<p><strong>只有目的地址才能使用广播地址和多播地址。</strong></p>
+<blockquote>
+<p>网卡还可被设置为一种特殊的工作方式：<strong>混杂方式</strong>（Promiscuous Mode）：只要收到共享媒体上传来的帧就会收下，而不管帧的目的MAC地址是什么。</p>
+<p>**嗅探器（Sniffer）**就是一种工作在混杂方式的网卡，再配合相应的工具软件（WireShark），就可以作为一种非常有用的网络工具来学习和分析网络。</p>
+</blockquote>
+<p>实际发送一个帧所需的平均时间（令 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span> 为总线两端的两个站之间的传播时延）：</p>
+<p><img src="image-20221028204601632.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221028204601632"></p>
+<p>若总线一旦空闲就有某个站立即发送帧，各站点发生帧都不会发生碰撞，则信道的利用率为：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo>=</mo><mfrac><msub><mi>T</mi><mtext>发</mtext></msub><mrow><msub><mi>T</mi><mtext>发</mtext></msub><mo>+</mo><mi>τ</mi></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mfrac><mi>τ</mi><msub><mi>T</mi><mtext>发</mtext></msub></mfrac></mrow></mfrac></mrow><annotation encoding="application/x-tex">S=\frac{T_发}{T_发+\tau}=\frac{1}{1+\frac{\tau}{T_发}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">发</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">发</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4527em;vertical-align:-1.1313em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord cjk_fallback mtight">发</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1433em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1132em;">τ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4453em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1313em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>可见，为提高信道利用率，应<strong>使 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span> 尽量小：总线端到端的距离不能太长；使 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mtext>发</mtext></msub></mrow><annotation encoding="application/x-tex">T_发</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">发</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 尽量大：帧的长度尽量大</strong>。</p>
+<h3 id="共享式以太网">共享式以太网</h3>
+<h4 id="CSMA-CD协议（以10Mb-s总线型以太网为例）">CSMA/CD协议（以10Mb/s总线型以太网为例）</h4>
+<p>最早的以太网是将许多计算机都连接到一根总线上，构成<strong>总线网</strong>。总线的特点是：<strong>当一台计算机发送数据时，总线上的所有计算机都能检测到这个数据</strong>。信道共享采用的是<strong>随机接入</strong>方式，其特点为：所有的用户可随机地发送信息，但总线上只要有一台计算机在发送数据，总线的传输资源就被占用，因而<strong>在同一时间只能允许一台计算机发送数据</strong>，否则各计算机之间就会互相干扰，使得所发送数据被破坏，因此必须有解决碰撞的网络协议。</p>
+<p>10Mb/s总线型以太网采用了 <strong>CSMA/CD</strong> 协议（CarrierSense Multiple Access with Collision Detection）。</p>
+<h5 id="基本内容">基本内容</h5>
+<ul>
+<li>
+<p><strong>多点接入</strong>MA：多个站点连接在同一总线上，相互竞争。</p>
+</li>
+<li>
+<p><strong>载波监听</strong>CS：**不管在发送数据之前，还是在发送数据之中，适配器都必须不停地检测总线上是否有其他站点在发送。**若检测到总线空闲了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>96</mn></mrow><annotation encoding="application/x-tex">96</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">96</span></span></span></span> 比特时间（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9.6</mn></mrow><annotation encoding="application/x-tex">9.6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">9.6</span></span></span></span> us），则发送这个帧；否则就继续检测。</p>
+</li>
+<li>
+<p><strong>碰撞检测</strong>CD：当多个站同时在总线上发送数据时，总线上的信号电压变化幅度将会增大（互相叠加）。适配器检测到的信号电压变化幅度超过一定值时，就认为总线上有多个站同时在发送数据，即产生了碰撞，此时该适配器<strong>立即停止发送</strong>，退避一段随机时间后再进入“载波监听”阶段，重发该帧。发生碰撞的帧会被接收方直接丢弃。</p>
+</li>
+</ul>
+<p>显然，在使用 CSMA/CD 协议时，一个站不可能同时进行发送和接收，因此<strong>使用 CSMA/CD 协议的以太网不可能进行全双工通信，而只能进行<mark>半双工通信</mark></strong>。</p>
+<p><strong>以太网每发送完一帧，需要把已发送的帧暂时保留一下</strong>。因为如果在争用期内检测出碰撞，之后还需要重传该帧。</p>
+<h5 id="强化碰撞">强化碰撞</h5>
+<p>发送端一旦发现发生了碰撞时，立即停止发送数据信息，转而<strong>发送 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn></mrow><annotation encoding="application/x-tex">32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> 比特（或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>48</mn></mrow><annotation encoding="application/x-tex">48</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">48</span></span></span></span> 比特）的人为干扰信号</strong>，以便让总线上所有站都知道现在发生了碰撞。</p>
+<p>对于 10 Mbit/s 以太网，发送干扰信号只需要 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.2</mn></mrow><annotation encoding="application/x-tex">3.2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3.2</span></span></span></span>（或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4.8</mn></mrow><annotation encoding="application/x-tex">4.8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4.8</span></span></span></span>）us。</p>
+<p><img src="image-20221028200959577.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221028200959577"></p>
+<p>A 从发送数据开始到发现碰撞并停止发送的时间间隔是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">T_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，发送干扰信号的持续时间是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>J</mi></msub></mrow><annotation encoding="application/x-tex">T_J</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.09618em;">J</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，可见发生碰撞使 A 浪费的时间为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>B</mi></msub><mo>+</mo><msub><mi>T</mi><mi>J</mi></msub></mrow><annotation encoding="application/x-tex">T_B+T_J</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.09618em;">J</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。信道被占用的时间还要增加一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span>，因此总线被占用的时间为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>B</mi></msub><mo>+</mo><msub><mi>T</mi><mi>J</mi></msub><mo>+</mo><mi>τ</mi></mrow><annotation encoding="application/x-tex">T_B+T_J+\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.09618em;">J</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span>。</p>
+<blockquote>
+<p>B在得知发生碰撞后，也要发送人为干扰信号。</p>
+</blockquote>
+<h5 id="争用期">争用期</h5>
+<p>注意：<strong>监听到总线空闲，但实际上总线不一定空闲</strong>。因为电磁波在总线上的传播速率是有限的（<strong>电磁波在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> km 电缆的传播时延约为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> us</strong>）。B 若在 A 发送的数据到达 B 之前发送自己的帧（因为这时 B 的载波监听检测不到 A 所发送的信息），则之后必然会与 A 发送的帧发生碰撞。</p>
+<p>可见，每一个站在开始发送数据之后的一小段时间内，都存在着遭遇碰撞的可能性。 这一小段时间是不确定的（但有上界），它取决于另一个发送数据的站到本站的距离。因此以太网中的每个站不能保证在检测到信道空闲后的某一时间内，一定能够把自己的数据帧成功地发送出去。以太网的这一特点称为<strong>发送的不确定性</strong>。</p>
+<p>设总线上 A 到 B 的传播时延为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span>。（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>=</mo><mfrac><mtext>两站之间的距离</mtext><mtext>信号传播速度</mtext></mfrac></mrow><annotation encoding="application/x-tex">\tau=\frac{两站之间的距离}{信号传播速度}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2173em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8723em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">信号传播速度</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">两站之间的距离</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>）</p>
+<p><img src="image-20221024151109558.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221024151109558"></p>
+<p>A 从发出数据到检测到碰撞所需时间为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>τ</mi><mo>−</mo><mi>δ</mi><mo>∈</mo><mo stretchy="false">[</mo><mi>τ</mi><mo separator="true">,</mo><mn>2</mn><mi>τ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">2\tau-\delta\in [\tau,2\tau)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mclose">)</span></span></span></span>，（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>τ</mi><mo>−</mo><mi>δ</mi><mo>&lt;</mo><mi>τ</mi><mo>⇒</mo><mn>0</mn><mo>&lt;</mo><mi>δ</mi><mo>≤</mo><mi>τ</mi></mrow><annotation encoding="application/x-tex">0\le \tau-\delta&lt;\tau\Rightarrow 0&lt;\delta\le\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6835em;vertical-align:-0.0391em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8304em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span>）。可见，<strong>在发送数据帧后至多经过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>τ</mi></mrow><annotation encoding="application/x-tex">2\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span> 便可知道所发送的数据帧是否遭受了碰撞</strong>。将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>τ</mi></mrow><annotation encoding="application/x-tex">2\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span> 称为 A 到 B 的<strong>争用期</strong>（或碰撞窗口），<strong>若经过争用期还没有检测到碰撞，那么就可以肯定这次发送不会发生碰撞</strong>。</p>
+<p>由于局域网上任意两个站之间的传播时延有长有短，因此局域网必须按最坏情况设计，即：<strong>取总线两端的两个站之间的传播时延（上界）为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span>。</strong></p>
+<blockquote>
+<p>10Mbit/s的共享总线以太网规定争用期为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn></mrow><annotation encoding="application/x-tex">512</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">512</span></span></span></span> 比特时间，即 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>τ</mi><mo>=</mo><mn>51.2</mn></mrow><annotation encoding="application/x-tex">2\tau=51.2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">51.2</span></span></span></span> us。</p>
+</blockquote>
+<p>总线的长度越长（单程端到端传播时延越大），网络中站点数量越多，发生碰撞的概率就越大。因此共享以太网的总线长度不能太长，接入的站点数量也不能太多。</p>
+<blockquote>
+<p>光纤的传播速度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">2\times 10^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span> m/s，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup><mo>×</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>×</mo><mn>51.2</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup><mo>=</mo><mn>5120</mn></mrow><annotation encoding="application/x-tex">2\times10^8\times \frac{1}{2} \times 51.2\times 10^{-6}=5120</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">51.2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5120</span></span></span></span> m。可见，当总线长度大于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5120</mn></mrow><annotation encoding="application/x-tex">5120</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5120</span></span></span></span> m 时，可能会出现两站之间的传播时延大于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>51.2</mn></mrow><annotation encoding="application/x-tex">51.2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">51.2</span></span></span></span> us。</p>
+<p>实际上以太网覆盖范围远远没有这样大（总线长度不超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2500</mn></mrow><annotation encoding="application/x-tex">2500</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2500</span></span></span></span> m）。以太网的争用期确定为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>51.2</mn></mrow><annotation encoding="application/x-tex">51.2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">51.2</span></span></span></span> us，不仅考虑到以太网的端到端时延，而且还包括存在的转发器所增加的时延、强化碰撞的干扰信号的持续时间等其他因素。</p>
+</blockquote>
+<h5 id="最小帧长">最小帧长</h5>
+<p>考虑这样一种情况：某个站发送了一个<strong>很短的帧</strong>，在发送完毕之前没有检测出碰撞。假定这个帧继续向前传播在到达目的站之前和别的站发送的帧发生了碰撞，因而最终目的站会将收到的有差错的帧丢弃。可是发送站却不知道这个帧发生了碰撞，因而不会重传这个帧。</p>
+<p>为了避免发生这种情况，确保<strong>共享总线以太网上的每一个站点在发送完一个完整的帧之前 能够检测出是否产生了碰撞</strong>，这就要求 <strong>帧的发送时延不能小于争用期 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>τ</mi></mrow><annotation encoding="application/x-tex">2τ</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span></strong> 。</p>
+<p>对于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn></mrow><annotation encoding="application/x-tex">10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> Mb/s 的共享总线以太网，要想使帧的发送时延大于等于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>τ</mi><mo>=</mo><mn>51.2</mn></mrow><annotation encoding="application/x-tex">2\tau=51.2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">51.2</span></span></span></span> us，就需要帧长 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span></span></span></span> 满足：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>≥</mo><mn>10</mn><mi>M</mi><mi>b</mi><mi mathvariant="normal">/</mi><mi>s</mi><mo>×</mo><mn>51.2</mn><mi>μ</mi><mi>s</mi><mo>=</mo><mn>512</mn><mi>b</mi><mo>=</mo><mn>64</mn><mi>B</mi></mrow><annotation encoding="application/x-tex">l\ge10 Mb/s \times51.2\mu s=512b=64B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8304em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">10</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">b</span><span class="mord">/</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">51.2</span><span class="mord mathnormal">μ</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">512</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">64</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 。即规定<strong>最短帧长为 64 字节</strong>。如果要发送的数据非常少，那么必须加入一些填充字节， 使帧长不小于 64 字节。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>最小帧长</mtext><mo>=</mo><mtext>数据率</mtext><mo>×</mo><mtext>争用期</mtext><mn>2</mn><mi>τ</mi><mo>=</mo><mtext>数据率</mtext><mo>×</mo><mn>2</mn><mo>×</mo><mfrac><mtext>两站之间的距离</mtext><mtext>信号传播速度</mtext></mfrac></mrow><annotation encoding="application/x-tex">最小帧长=数据率\times 争用期 2\tau=数据率\times 2\times \frac{两站之间的距离}{信号传播速度}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">最小帧长</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">数据率</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">争用期</span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">数据率</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">信号传播速度</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">两站之间的距离</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>当某个站点在发送帧时，如果帧的前 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>B</mi></mrow><annotation encoding="application/x-tex">64 B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">64</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 没有遭遇碰撞，那么该帧的后续部分也就不会遭遇碰撞。即：如果发生碰撞，一定是在帧的前 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>B</mi></mrow><annotation encoding="application/x-tex">64B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">64</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 之内。由于一检测到冲突就立即中止发送，这时已经发送出去的数据一定小于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn></mrow><annotation encoding="application/x-tex">64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">64</span></span></span></span> 字节，因此：<strong>凡长度小于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn></mrow><annotation encoding="application/x-tex">64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">64</span></span></span></span> 字节的帧都是由于冲突而异常中止的无效帧，收到了这种帧，就直接丢弃</strong>。</p>
+<h5 id="帧间最小间隔">帧间最小间隔</h5>
+<p>以太网规定了帧间最小间隔为 96 比特时间（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9.6</mn></mrow><annotation encoding="application/x-tex">9.6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">9.6</span></span></span></span> us），目的是：使刚刚收到数据帧的站的接收缓存来得及清理，做好接收下一帧的准备。</p>
+<h5 id="TBEB算法">TBEB算法</h5>
+<p>以太网使用<strong>截断二进制指数退避</strong>（truncated binary exponential backoff）算法来确定碰撞后重传的时机。该算法让发生碰撞的站在停止发送数据后，并不是一检测到信道变为空闲后就立即再发送数据，而是等待一个随机的时间，<strong>生成了最小退避时间的站将率先进入载波检测状态</strong>。</p>
+<blockquote>
+<p>发生碰撞的站将会同时检测到信道变成了空闲。如果大家都同时重传，必然接连发生碰撞。</p>
+</blockquote>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>退避时间</mtext><mo>=</mo><mn>2</mn><mi>τ</mi><mo>×</mo><mi>R</mi><mi>a</mi><mi>n</mi><mi>d</mi><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mtext> </mtext><mn>1</mn><mo separator="true">,</mo><mtext> </mtext><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mtext> </mtext><msup><mn>2</mn><mrow><mi>min</mi><mo>⁡</mo><mo stretchy="false">{</mo><mtext>重传次数</mtext><mo separator="true">,</mo><mtext> </mtext><mn>10</mn><mo stretchy="false">}</mo></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">退避时间=2\tau\times Rand(0,\ 1,\ ...,\ 2^{\min\{重传次数,\ 10\}}-1)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">退避时间</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">an</span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">m</span><span class="mtight">i</span><span class="mtight">n</span></span><span class="mopen mtight">{</span><span class="mord cjk_fallback mtight">重传次数</span><span class="mpunct mtight">,</span><span class="mspace mtight"><span class="mtight"> </span></span><span class="mord mtight">10</span><span class="mclose mtight">}</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></p>
+<p><img src="image-20221026153943859.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026153943859"></p>
+<p>如果连续多次发生碰撞，就表明可能有较多的站点参与竞争信道。使用该退避算法可使重传需要推迟的平均时间随重传次数而增大（动态退避），从而减小产生碰撞的概率。</p>
+<p>当重传达 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn></mrow><annotation encoding="application/x-tex">16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span> 次（最大重传次数）仍不能成功时，应放弃重传并向高层报告。</p>
+<h5 id="总结">总结</h5>
+<p><img src="image-20221028202330347.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221028202330347"></p>
+<h4 id="使用集线器的星形以太网">使用集线器的星形以太网</h4>
+<p>传统以太网最初使用粗同轴电缆，后来使用较便宜的细同轴电缆，但由于机械接口较多，这种使用无源电缆线的总线型以太网可靠性一般。后来便转变为了使用<strong>集线器</strong>的星形以太网，站点连接到集线器的传输媒体使用<strong>双绞线电缆</strong>。</p>
+<p>集线器（Hub）是一种可靠性非常高的设备，可以实现用<strong>大规模集成电路</strong>来替代总线，模拟了实际电缆线的工作。使用集线器的以太网<strong>在逻辑上与总线网是相同的</strong>。集线器连接的各站点共享总线（逻辑上）资源，各站中的适配器仍执行 CSMA/CD 协议，在同一时刻至多只允许一个站发送数据。</p>
+<p><img src="image-20221026165418083.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026165418083"></p>
+<p>一个集线器有许多端口，每个端口通过RJ-45插头。集线器只工作在<strong>物理层</strong>，它的每个端口仅简单地转发比特，不进行碰撞检测（碰撞检测的任务由各站点中的网卡负责），类似于多端口转发器。</p>
+<p><img src="image-20221028203746394.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221028203746394"></p>
+<blockquote>
+<p>此外集线器一般还有少量的<strong>容错能力</strong>和<strong>网络管理功能</strong>。例如，若网络中某个站点的网卡出现了故障而不停地发送帧，集线器可以检测到这个问题，在内部断开与出故障网卡的连线，使整个以太网能正常工作。</p>
+</blockquote>
+<p>IEEE于1990年制定了 10BASE-T星型以太网（<code>10</code>表示传输速率为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn></mrow><annotation encoding="application/x-tex">10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> Mb/s，<code>BASE</code>表示采用基带信号来进行传输，<code>T</code> 表示采用双绞线作为传输媒体）的标准<code>802.3i</code>。</p>
+<h4 id="在物理层扩展以太网">在物理层扩展以太网</h4>
+<h5 id="扩展站点与集线器之间的距离">扩展站点与集线器之间的距离</h5>
+<p>10BASE-T以太网中每个站到集线器的距离不超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn></mrow><annotation encoding="application/x-tex">100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span> m（因此两站点间的通信距离最大不能超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>200</mn></mrow><annotation encoding="application/x-tex">200</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">200</span></span></span></span> m），否则所传输的信号就会衰减到使 CSMA/CD协议 无法正常工作。</p>
+<ul>
+<li>
+<p>对于早期的粗/细同轴电缆共享总线以太网，为了提高网络的地理覆盖范围，需要利用<strong>转发器</strong>。转发器工作在<strong>物理层</strong>。</p>
+</li>
+<li>
+<p>现在为提高站点到集线器之间的距离，常使用<strong>光纤和调制器、解调器</strong>。</p>
+<p>光纤调制解调器的作用就是进行电信号和光信号的转换。由于光纤的时延很小、带宽很宽，因此使用这种方法可以很容易地使主机和几公里以外的集线器相连接。</p>
+<p><img src="image-20221026170940827.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026170940827"></p>
+</li>
+</ul>
+<h5 id="扩展共享式以太网的覆盖范围和站点数量">扩展共享式以太网的覆盖范围和站点数量</h5>
+<p>使用多个集线器可以构成覆盖更大范围、连接更多站点的<strong>多级星型以太网</strong>。</p>
+<p><img src="image-20221026171221091.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026171221091"></p>
+<ul>
+<li>优点：扩大了通信范围和以太网的覆盖范围。</li>
+<li>缺点：仍是一个碰撞域，不能连接太多的站点，否则可能会出现大量的碰撞，导致平均吞吐量太低。使用不同技术的以太网不能用集线器互连。</li>
+</ul>
+<h4 id="在数据链路层扩展以太网">在数据链路层扩展以太网</h4>
+<h5 id="网桥">网桥</h5>
+<p>使用网桥（而不是主干集线器）可以避免形成更大的碰撞域。网桥工作在<strong>物理层和数据链路层</strong>，可以识别帧的结构并根据帧首部中的目的MAC地址和网桥自身的<strong>帧转发表</strong>来转发或过滤所收到的帧，在向网段转发帧时会执行相应的媒体接入控制协议（对于共享式以太网就是CSMA/CD协议）。</p>
+<p><img src="image-20221026172131464.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026172131464"></p>
+<blockquote>
+<p>网桥一般只有两个端口，可以分隔2个网段，这2个网段的碰撞域都是独立的。如今网桥基本被功能更强的交换机所取代。</p>
+</blockquote>
+<p>转发表是网桥转发帧的依据，里面记录有网桥所知道的网络中各主机的MAC地址与自己各接口的对应关系。网桥收到帧后会在自身的转发表中查找帧的MAC地址根据查找结果来转发或丢弃帧。</p>
+<ul>
+<li>
+<p>网桥在发送数据帧前，通常要先将数据帧完整暂存下来，根据FCS执行帧检测，才开始转发该数据帧。如果网桥收到有误码的帧则直接丢弃。</p>
+</li>
+<li>
+<p>A给D发送一个帧：</p>
+  <img src="image-20221026172512440.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026172512440" style="width:67%;" />
+<p>其它站在收到该帧后，会因目的地址不匹配而丢弃此帧（称为“<strong>过滤</strong>”）。</p>
+</li>
+<li>
+<p>A给C发送一个帧：</p>
+  <img src="image-20221026173336208.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026173336208" style="width:67%;" />
+<p>当网桥发现所要转发的接口正是帧所传来的接口时，这表明该帧的发送站与目的站处于同一个网段，目的站可以直接收到这个帧而不需要网桥的转发，因此网桥会丢弃该帧。</p>
+</li>
+<li>
+<p>A发送一个广播帧：</p>
+  <img src="image-20221026173520340.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026173520340" style="width:67%;" />
+<p>对于广播帧，网桥不会去查找转发表，而是直接通过除接收该帧的接口外的其他接口转发该广播帧。</p>
+</li>
+</ul>
+<h5 id="以太网交换机">以太网交换机</h5>
+<p>以太网交换机（又称交换式集线器）本质上就是<strong>多端口网桥</strong>，特点：</p>
+<ul>
+<li>
+<p>工作在物理层与<strong>数据链路层</strong>。</p>
+</li>
+<li>
+<p>每个端口可以直接与一个主机或另一个以太网交换机相连，此时工作在<strong>全双工方式</strong>，能在自身内部同时连通多对接口（具有并行性），使每一对相互通信的计算机都能像独占传输媒体那样，无碰撞地传输数据。这样就<strong>不需要使用CSMA/CD协议</strong>了。</p>
+<p>每一个端口和连接到端口的主机构成了一个碰撞域，具有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个端口的以太网交换机的碰撞域共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个。</p>
+</li>
+<li>
+<p><strong>当交换机的接口连接的是集线器时，该接口就只能使用CSMA/CD协议并只能工作在半双工方式</strong>。</p>
+<p>（现代交换机和计算机中的网卡都能自动识别上述两种情况，并自动切换到相应的工作方式。）</p>
+</li>
+<li>
+<p>每个端口都有存储器，能在<strong>输出端口</strong>繁忙时把到来的帧进行缓存，以后再进行发送。</p>
+</li>
+<li>
+<p>以太网交换机用<strong>硬件</strong>转发收到的帧，其转发速率要比使用软件转发的网桥快很多。</p>
+</li>
+<li>
+<p>一般都具有多种速率的端口，方便了各种不同情况的用户。</p>
+</li>
+</ul>
+<blockquote>
+<p>大多数以太网交换机对收到的帧采用<strong>存储转发</strong>方式进行转发，但也有一些交换机采用<strong>直通</strong>（cut-through）方式：不必把整个数据帧先缓存后再进行处理，而是在<strong>接收完数据帧的目的MAC地址</strong>后，就立即根据该地址进行转发（基于硬件的交叉矩阵），从而提高了帧的转发速度，时延小。缺点：由于这种方法不检查差错就直接将帧转发出去，因此有可能转发一些无效帧。</p>
+<details>
+<summary>例题</summary>
+<img src="image-20221026220840230.png" srcset="/syhblog/img/loading.gif" lazyload>
+</details>
+</blockquote>
+<p>以太网交换机内部的<strong>交换表</strong>是通过<strong>自学习</strong>算法自动地逐渐建立起来的。</p>
+<p><img src="image-20221026183643492.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026183643492"></p>
+<ul>
+<li>
+<p>起始状态，以太网交换机中的交换表是空的。</p>
+</li>
+<li>
+<p>若站 A 向 站 B 发送了一个帧，该帧从接口 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 进入交换机。</p>
+</li>
+<li>
+<p>交换机收到帧后，先把源MAC地址 A 和进入网桥的端口 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 写入交换表中（如果还没写过）。再查找交换表，若表中没有 B 的地址，则交换机向<strong>除 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 以外</strong>的所有端口<strong>广播</strong>这个帧，从而可以保证让 B 收到这个帧。</p>
+</li>
+<li>
+<p>由于在交换表中写入了 (A, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span>)，因此以后不管从哪个端口收到帧，只要其目的地址是A，就将该帧从端口 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 转发出去，此时就不必广播该帧了。</p>
+</li>
+</ul>
+<p>考虑到交换机端口更换主机、主机更换网络适配器等情况，交换表中的项目应及时更新。为此，当交换表中写入一个项目时，还要记录当时的时间。该项目经过预设时间后（即超出有效时间），就会被自动从表中删除，从而保证交换表中的数据尽量反映当前网络的实际状况。</p>
+<p>综上，交换表一般有三列：<strong>MAC地址</strong>、<strong>端口</strong>、<strong>写入时间</strong>。</p>
+<blockquote>
+<p>以太网交换机的这种自学习方法使得以太网交换机能够<strong>即插即用</strong>，不必人工进行配置，因此非常方便。</p>
+</blockquote>
+<p>为了增加网络的可靠性，在使用以太网交换机组网时，往往会增加一些冗余的链路。这时自学习的结果就可能导致以太网帧在网络的某个环路中无限兜圈。</p>
+<p><img src="image-20221026214109429.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026214109429"></p>
+<p>为了解决该问题，IEEE 的 <code>802.1D</code>标准制定了一个<strong>生成树协议 STP</strong>（Spanning Tree Protocol）。其要点就是<strong>不改变网络的实际拓扑，但在逻辑上切断某些链路，使得从任意一台主机到所有其他主机的路径都是无环路的树状结构</strong>。</p>
+<p><strong>使用集线器扩展以太网 与 使用交换机扩展以太网 的区别：</strong></p>
+<p><img src="%E6%AF%94%E8%BE%83%E9%9B%86%E7%BA%BF%E5%99%A8%E4%B8%8E%E4%BA%A4%E6%8D%A2%E6%9C%BA.jpg" srcset="/syhblog/img/loading.gif" lazyload alt="比较集线器与交换机"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">隔离冲突域</th>
+<th style="text-align:center">隔离广播域</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">集线器</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td style="text-align:center">交换机</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td style="text-align:center">路由器</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+</tbody>
+</table>
+<h3 id="交换式以太网">交换式以太网</h3>
+<p>仅使用交换机的以太网就是交换式以太网。</p>
+<p><img src="image-20221026215545849.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026215545849"></p>
+<p>交换机对收到的帧进行存储转发，并且能够实现多对接口并行交换，因此不会产生碰撞，交换式以太网不使用CSMA/CD协议。</p>
+<blockquote>
+<p>交换式以太网不使用 CSMA/CD（也不存在“争用期”），那为什么还叫做以太网呢？原因就是它仍采用以太网的帧结构。</p>
+</blockquote>
+<h3 id="对比共享式以太网和交换式以太网">对比共享式以太网和交换式以太网</h3>
+<ul>
+<li>
+<p>对于单播帧：</p>
+<p><img src="image-20221026222240165.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026222240165"></p>
+</li>
+<li>
+<p>对于广播帧：</p>
+<p><img src="image-20221026222404937.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221026222404937"></p>
+<p>可见，使用集线器的共享式以太网中的各主机属于同一个广播域，而使用交换机的交换式以太网中的各主机也属于同一个广播域，两种以太网对于广播帧的转发情况在效果上看是一样的，但原理并不相同。集线器只工作在物理层，并不能识别帧首部中的MAC地址，不管集线器收到的是单播帧还是广播帧，集线器仅仅是将帧从其它所有接口转发出去；交换机还工作在数据链路层，它可以识别帧的结构，从帧首部中提取出目的MAC地址，然后查找自己的转发表，对帧进行特定操作（明确转发、盲目转发、丢弃）。</p>
+</li>
+<li>
+<p>多对主机同时通信时：</p>
+<p><img src="image-20221027000025012.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221027000025012"></p>
+<p>对于共享式以太网，多个站点同时通信时必然会产生碰撞。发送碰撞的帧必然会传播到网络中的各主机，各主机中的网卡检测到遭遇碰撞的帧后将其丢弃；对于交换式以太网，由于交换机对收到的帧进行存储转发，并且能够实现多对接口并行交换，因此不会产生碰撞，帧可以被正确地转发。</p>
+</li>
+</ul>
+<h3 id="虚拟局域网VLAN">虚拟局域网VLAN</h3>
+<p>交换式以太网中的所有站点都属于同一个广播域。巨大的广播域难以管理和维护，带来潜在的安全问题，例如广播风暴等。</p>
+<p>可以采用虚拟局域网技术（Virtual Local Area Network，<strong>VLAN</strong>）来分隔广播域。VLAN并不是一种新型网络，它只是局域网能够提供给用户的一种服务。<strong>将局域网内的站点划分成与物理位置无关的逻辑组</strong>，一个逻辑组就是一个VLAN，VLAN中的各站点具有某些共同的应用需求。</p>
+<p><img src="%E6%9C%AA%E5%91%BD%E5%90%8D33.jpg" srcset="/syhblog/img/loading.gif" lazyload alt="未命名33"></p>
+<p>网络管理员可对局域网中的各交换机进行配置来建立多个逻辑上独立的VLAN。<strong>属于同一VLAN的站点之间可以直接进行通信，而不同VLAN中的站点之间不能直接通信</strong>。<strong>广播帧只在同一VLAN内转发，这样就将广播域限制在了一个VLAN内</strong>。</p>
+<blockquote>
+<p>注意：连接在同一交换机上的多个站点可以属于不同的VLAN，而属于同一VLAN的多个站点可以连接在不同的交换机上。</p>
+</blockquote>
+<h4 id="VLAN的实现">VLAN的实现</h4>
+<p>最常见的就是基于<strong>以太网交换机的接口</strong>来实现VLAN，这需要以太网交换机满足：</p>
+<ul>
+<li>能够处理带有VLAN标记的帧，也就是<code>IEEE 802.1Q</code>帧。</li>
+<li>交换机的各接口可以支持不同的接口类型（不同接口类型的接口对帧的处理方式有所不同）。</li>
+</ul>
+<p><strong><code>IEEE 802.1Q</code>帧</strong>：</p>
+<p><img src="image-20221027154217926.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221027154217926"></p>
+<p>由于用于 VLAN 的以太网帧增加了 4 个字节，因此<code>IEEE 802.1Q</code>帧的最大帧长变为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1522</mn></mrow><annotation encoding="application/x-tex">1522</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1522</span></span></span></span> 字节。<strong>插入VLAN标签后，802.1Q帧最后的帧检验序列 FCS 必须重新计算</strong>。</p>
+<ul>
+<li>
+<p><strong>标签协议标识符TPID</strong>：值固定为 <code>0x8100</code>，表示该帧是IEEE 802.1Q帧。</p>
+<p>当数据链路层检测到源地址字段后面的两个字节的值是 <code>0x8100</code> 时，就知道该帧是 IEEE 802.1Q帧。</p>
+</li>
+<li>
+<p><strong>优先级PRI</strong>：取值范围是0~7，值越大优先级越高。当网络阻塞时，设备优先发送优先级高的802.1Q帧。</p>
+</li>
+<li>
+<p><strong>规范格式指示符CFI</strong>：<code>0</code>表示MAC地址以规范格式封装，<code>1</code>表示MAC地址以非规范格式封装。</p>
+<p>对于以太网，CFI的取值为<code>0</code>。</p>
+<p>（PRI、CFI这 4 位实际上并没有什么作用）</p>
+</li>
+<li>
+<p><strong>虚拟局域网标识符VID</strong>：VID是802.1Q帧所属VLAN的编号，唯一地标志了802.1Q帧属于哪一个VLAN。取值范围是0~4095，其中0和4095保留不使用。</p>
+<blockquote>
+<p>VID由交换机管理人员设定，每台主机并不知道自己的 VID 值，但交换机必须知道这些信息。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="image-20221029003018985.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221029003018985"></p>
+<p>每台计算机都是通过<strong>接入链路</strong>（access link）连接到交换机的，主机发送到交换机的帧都是<strong>标准的以太网帧</strong>。连接两个交换机端口的链路称为<strong>汇聚链路</strong>（trunk link），<strong>在汇聚链路传送的帧是 802.1Q 帧</strong>。</p>
+<p><strong>802.1Q帧一般不由用户主机处理，而是由以太网交换机来处理</strong>：</p>
+<ul>
+<li>A 向 B 发送帧时，由于交换机#1 能够根据帧首部的目的 MAC 地址，识别到 B 与本交换机直接相连，因此直接进行帧的转发，不需要使用 VLAN 标签。</li>
+<li>A 向 E 发送帧时，交换机#1 查到 E 并没有与自己相连，因此需要通过汇聚链路把帧转发到交换机#2，但在转发之前会插入 VLAN 标签使之成为802.1Q帧（“打标签”）。因为若不插入 VLAN 标签，交换机 #2 就不知道应把帧转发给哪一个 VLAN。交换机#2 在向 E 转发帧之前，会去除帧中的 VLAN 标签（“去标签”），因此 <strong>E 收到的帧就是 A 发送的标准以太网帧</strong>。</li>
+<li>A 向 C 发送帧时，情况更加复杂，因为虽然 A 和 C 都连接到同一个交换机，但它们己经处在不同的网络中，因此 A 与 C 之间的通信被认为是不同网络之间的通信，超过数据链路层的范围。</li>
+</ul>
+
+                
+              </div>
+            
+            <!-- --------------------------------------------------------------------------------- -->
+            <hr/>   
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/syhblog/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-1">  <!-- 右侧的宽度（设置为0） -->
+      
+  <!-- 该部分内容也可放到主体部分种，就像对目录的处理方式一样 -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       &copyAll rights reserved. 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/syhblog/js/events.js" ></script>
+<script  src="/syhblog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/syhblog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script  src="https://lib.baomitu.com/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script  src="/syhblog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/syhblog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
