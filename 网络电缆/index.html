@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/syhblog/img/syh.png">
+  <link rel="icon" href="/syhblog/img/syh.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Yihao Shao">
+  <meta name="keywords" content="Notes Thoughts">
+  
+    <meta name="description" content="CAT-5电缆 CAT-5（Category 5 cable for Ethernet）电缆是以太网中常用的电缆，其内部是非屏蔽双绞线（UTP），两端接 RJ-45接头（水晶头）。  其内部一共有 8 根电线，按颜色分为 4 对，两两绞合在一起。    橙色电线负责发送数据，绿色电线负责接收数据。 蓝色电线和棕色电线是为了将来扩展带宽而预留的，目前没有什么用。   条纹用来区分极性：带白色条纹的电">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络电缆">
+<meta property="og:url" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/index.html">
+<meta property="og:site_name" content="SYH">
+<meta property="og:description" content="CAT-5电缆 CAT-5（Category 5 cable for Ethernet）电缆是以太网中常用的电缆，其内部是非屏蔽双绞线（UTP），两端接 RJ-45接头（水晶头）。  其内部一共有 8 根电线，按颜色分为 4 对，两两绞合在一起。    橙色电线负责发送数据，绿色电线负责接收数据。 蓝色电线和棕色电线是为了将来扩展带宽而预留的，目前没有什么用。   条纹用来区分极性：带白色条纹的电">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109134704339.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109134917784.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109141446401.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109141522683.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109142928422.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109143556501.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109143908785.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109155236844.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/%E7%86%94%E7%BA%A4%E6%9C%BA.jpg">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109161014448.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109162302197.png">
+<meta property="og:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109162423291.png">
+<meta property="article:published_time" content="2022-11-09T08:30:44.000Z">
+<meta property="article:modified_time" content="2022-11-09T08:34:33.748Z">
+<meta property="article:author" content="Yihao Shao">
+<meta property="article:tag" content="Notes Thoughts">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/%E7%BD%91%E7%BB%9C%E7%94%B5%E7%BC%86/image-20221109134704339.png">
+  
+  
+  
+  <title>网络电缆 - SYH</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/syhblog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/syhblog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/syhblog/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/syhblog/css/mycss.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/syhblog/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/syhblog/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/syhblog/js/utils.js" ></script>
+  <script  src="/syhblog/js/color-schema.js" ></script>
+  
+
+
+  
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/syhblog/">
+      <strong>SYH</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                时间轴
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/syhblog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/syhblog/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络电缆"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Yihao Shao
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-09 16:30" pubdate>
+          2022年11月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-1">  <!-- 左侧的宽度 -->
+    </div>
+
+    <div class="col-lg-10 nopadding-x-md">  <!-- 中间的宽度（主体部分） -->
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+ <!-- 将目录放在这里 -->
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">网络电缆</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="CAT-5电缆">CAT-5电缆</h3>
+<p>CAT-5（Category 5 cable for Ethernet）电缆是以太网中常用的电缆，其内部是<strong>非屏蔽双绞线</strong>（UTP），两端接 <strong>RJ-45接头</strong>（水晶头）。</p>
+<p><img src="image-20221109134704339.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109134704339"></p>
+<p>其内部一共有 8 根电线，按颜色分为 4 对，两两绞合在一起。</p>
+<p><img src="image-20221109134917784.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109134917784"></p>
+<ul>
+<li>
+<p>橙色电线负责发送数据，绿色电线负责接收数据。</p>
+<p>蓝色电线和棕色电线是为了将来扩展带宽而预留的，目前没有什么用。</p>
+</li>
+<li>
+<p>条纹用来区分极性：带白色条纹的电线为正极，纯色的电线为负极。</p>
+</li>
+</ul>
+<blockquote>
+<p>带宽（bandwidth）指单位时间内电线可传输的最大数据量，网络速率则是电线传输数据的实际速率。</p>
+<p>应将带宽理解为一种“<strong>容量</strong>”，是单位时间内信息可传输的数据量的上界。</p>
+</blockquote>
+<h4 id="RJ-45插头">RJ-45插头</h4>
+<p>8根电线需要分别插入接头的8个插槽，与插槽末端的金属触点充分接触。当将接头插入某插孔时，接头里的金属探针会和插孔里的金属触点相互接触。注意：只有8根线的顺序正确时，信息才能顺利通过。电线的顺序有 2 种标准：</p>
+<ul>
+<li>
+<p>568A标准</p>
+<p><img src="image-20221109141446401.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109141446401"></p>
+</li>
+<li>
+<p>568B标准</p>
+<p><img src="image-20221109141522683.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109141522683"></p>
+</li>
+</ul>
+<p>可见，两种标准只是对调了绿色电线和橙色电线的位置。使用任意一种均可以，关键是<strong>电缆两端的RJ-45接头必须使用同一种标准</strong>。</p>
+<h3 id="同轴电缆">同轴电缆</h3>
+<h4 id="同轴电缆网络（Coaxial-Network）">同轴电缆网络（Coaxial Network）</h4>
+<p><img src="image-20221109142928422.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109142928422"></p>
+<p>同轴电缆网络（又称 RG-62网络）属于总线型网络。网络上的每个主机都必须通过T型连接器与网络相连。如果总线损坏、或末端没有安装终端电阻、或任意一个T型连接器出现故障，那么整个网络都将无法正常工作。</p>
+<h4 id="特点">特点</h4>
+<p>同轴电缆和CAT-5电缆都可以用来连接网络，区别在于：</p>
+<ul>
+<li>
+<p>同轴电缆内部是一根铜导线，CAT-5内部是4对UTP。</p>
+<p>同轴电缆也有护套，但内部只有一根导线。此外电缆内还包含塑料绝缘层和由铜质网状物构成的屏蔽层。</p>
+<p><img src="image-20221109143556501.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109143556501"></p>
+</li>
+<li>
+<p>CAT-5使用的是RJ-45接头，而同轴电缆则需要和终端连接器、T型连接器、终端电阻等配合使用，不同的连接器有不同的用途。</p>
+<p><img src="image-20221109143908785.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109143908785"></p>
+<p>桶形连接器（coupler）用来连接两端同轴电缆，终端连接器用来将电缆连接具体设备。</p>
+  <details>
+      <summary>About <i>terminator</i></summary>
+      <p>
+          As we’ve seen, a coaxial network cable is made up of one big conductor core. When the conduction is not looped back through the copper core, we say that it is not <b>terminated</b>. When a wire isn’t terminated, the network loses the flow of electrons and, therefore, the flow of network data.    </p>
+      <p>
+  A terminator ensures that the signal in the cable keeps moving. The terminator does this by ensuring that the electrons stay in an electrical loop. A resistor in the terminator redirects electrons to the shielding layer, which effectively keeps them looping back along the cable without interfering with the network’s signal. If the main cable is not terminated, the network will not function.    </p><br>
+      <img src="image-20221109155236844.png" srcset="/syhblog/img/loading.gif" lazyload>
+  </details>
+</li>
+</ul>
+<h3 id="光纤">光纤</h3>
+<p>光纤由纤芯和包层（cladding）构成，包层的折射率低于纤芯，这使得入射角足够大时，光线可以发生全反射。</p>
+<p>光纤损坏时，可以使用熔纤机进行修复。</p>
+<blockquote>
+<details>
+    <summary>熔纤机的工作过程</summary>
+	<p>
+        <img src="./熔纤机.jpg" srcset="/syhblog/img/loading.gif" lazyload>
+    </p>
+</details>
+</blockquote>
+<p>光纤也需要连接器，作用为：连接光缆，使光信号顺利通过。</p>
+<p><img src="image-20221109161014448.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109161014448"></p>
+<p>光纤分为 2 类：<strong>单模光纤</strong>和<strong>多模光纤</strong>。</p>
+<p><img src="image-20221109162302197.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109162302197"></p>
+<p><img src="image-20221109162423291.png" srcset="/syhblog/img/loading.gif" lazyload alt="image-20221109162423291"></p>
+
+                
+              </div>
+            
+            <!-- --------------------------------------------------------------------------------- -->
+            <hr/>   
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/syhblog/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-1">  <!-- 右侧的宽度（设置为0） -->
+      
+  <!-- 该部分内容也可放到主体部分种，就像对目录的处理方式一样 -->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       &copyAll rights reserved. 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/syhblog/js/events.js" ></script>
+<script  src="/syhblog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/syhblog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script  src="https://lib.baomitu.com/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script  src="/syhblog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/syhblog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
