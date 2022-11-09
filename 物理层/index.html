@@ -28,6 +28,7 @@
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/%E5%B8%A6%E9%80%9A%E8%B0%83%E5%88%B6.png">
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/QAM.png">
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/QAM16.png">
+<meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/img.png">
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/%E4%BF%A1%E9%81%93%E4%BE%8B%E9%A2%98.png">
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%932.png">
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93.png">
@@ -47,7 +48,7 @@
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/%E7%A0%81%E5%88%86%E5%A4%8D%E7%94%A8%E4%BE%8B%E9%A2%98.png">
 <meta property="og:image" content="http://example.com/%E7%89%A9%E7%90%86%E5%B1%82/%E5%AE%BD%E5%B8%A6%E6%8E%A5%E5%85%A5%E6%8A%80%E6%9C%AF.png">
 <meta property="article:published_time" content="2022-11-07T14:22:54.000Z">
-<meta property="article:modified_time" content="2022-11-07T14:26:03.060Z">
+<meta property="article:modified_time" content="2022-11-09T09:26:08.451Z">
 <meta property="article:author" content="Yihao Shao">
 <meta property="article:tag" content="Notes Thoughts">
 <meta name="twitter:card" content="summary_large_image">
@@ -259,7 +260,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.7k 字
+          6k 字
         
       </span>
     
@@ -270,7 +271,7 @@
         
         
         
-          57 分钟
+          60 分钟
         
       </span>
     
@@ -335,6 +336,7 @@
 <h2 id="关于数据通信">关于数据通信</h2>
 <p>一个数据通信系统可划分为三大部分：<strong>源系统</strong>、 <strong>传输系统</strong>和<strong>目的系统</strong>。</p>
 <p><img src="%E6%95%B0%E5%AD%97%E9%80%9A%E4%BF%A1%E7%B3%BB%E7%BB%9F.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<h3 id="信号调制">信号调制</h3>
 <p>源点发出的数据（基带信号）要进行<strong>调制</strong>后才能在传输系统中进行传输。调制可分为2类：</p>
 <ul>
 <li>
@@ -355,6 +357,18 @@
 <p><img src="QAM16.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
 </li>
 </ul>
+<p>各种信号的调制和解码由计算机中的 <strong>网卡</strong> 完成（Network Interface Card，<strong>NIC</strong>）。</p>
+<p><img src="img.png" srcset="/syhblog/img/loading.gif" lazyload alt=""></p>
+<p>如果信号是通过以太网传送的，那么使用的就是曼彻斯特编码（以太网10BASE-T标准规定）。转化的过程为：</p>
+<ul>
+<li>CPU将数据以 <strong>不归零编码（NRZ）</strong> 的形式发送给网卡</li>
+<li>网卡<strong>将数据与时钟信号结合</strong>，生成曼彻斯特编码。</li>
+<li>将信号通过以太网传输。</li>
+<li>接收方的网卡将收到的曼彻斯特编码转换为不归零编码，然后通知CPU收到数据。</li>
+</ul>
+<blockquote>
+<p>并非所有以太网都使用曼彻斯特编码，100Mb/s的以太网使用 4B/5B 编码规则，千兆以太网使用 8B/10B 编码规则…</p>
+</blockquote>
 <h3 id="关于信道">关于信道</h3>
 <ul>
 <li>
